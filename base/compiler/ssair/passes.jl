@@ -521,7 +521,7 @@ function lift_comparison!(::typeof(isdefined), compact::IncrementalCompact,
     lift_comparison_leaves!(isdefined_tfunc, compact, args[2], args[3], lifting_cache, idx)
 end
 
-function lift_comparison_leaves!(@specialize(tfunc),
+@inline function lift_comparison_leaves!(@specialize(tfunc),
     compact::IncrementalCompact, @nospecialize(val), @nospecialize(target),
     lifting_cache::IdDict{Pair{AnySSAValue, Any}, AnySSAValue}, idx::Int)
     typeconstraint = widenconst(argextype(val, compact))
