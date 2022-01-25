@@ -912,8 +912,12 @@ function getuseidx(@nospecialize use)
 end
 
 function compute_live_ins(cfg::CFG, fdu::FieldDefUse)
-    uses = Int[getuseidx(use) for use in fdu.uses]
-    compute_live_ins(cfg, fdu.defs, uses)
+    uses = Int[]
+    for use in fdu.uses
+        isa(use, IsdefinedUse) && continue
+        push!(uses, getuseidx(use))
+    end
+    return compute_live_ins(cfg, fdu.defs, uses)
 end
 
 # even when the allocation contains an uninitialized field, we try an extra effort to check
